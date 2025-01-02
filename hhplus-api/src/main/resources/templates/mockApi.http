@@ -1,0 +1,65 @@
+### 토큰 검증 API
+GET http://localhost:8083/users/token-check/1
+
+### 유저 토큰 발급 API
+GET http://localhost:8083/users/token-issuance/1
+
+### 유저 대기열 API
+POST http://localhost:8083/users/token-queue-check
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "token": "550e8400-e29b-41d4-a716-446655440000"
+}
+
+### 예약 가능 날짜 조회 API
+POST http://localhost:8083/concert/possible-date-check
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "token": "550e8400-e29b-41d4-a716-446655440000"
+}
+
+### 예약 가능 좌석 조회 API
+POST http://localhost:8083/concert/possible-seat-check
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "token": "550e8400-e29b-41d4-a716-446655440000",
+  "date": "2025-01-01"
+}
+
+### 좌석 예약 요청 API
+POST http://localhost:8083/concert/seat/reservation
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "token": "550e8400-e29b-41d4-a716-446655440000",
+  "seatId": 1
+}
+
+### 결제 요청 API
+POST http://localhost:8083/payment
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "token": "550e8400-e29b-41d4-a716-446655440000",
+  "seatId": 1
+}
+
+### 잔액 조회 API
+GET http://localhost:8083/users/balance/1
+
+### 잔액 충전 API
+POST http://localhost:8083/users/charge
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "price": 1000
+}
