@@ -1,13 +1,13 @@
 ## PR 설명
 시나리오 선정 : 콘서트 예약 대기열 서비스
 
-### [STEP-5]
+### [STEP-7]
 마일스톤 : https://github.com/users/jjd0922/projects/1/views/2?layout=roadmap
 요구사항 분석 : https://github.com/jjd0922/hhplus-concert/wiki/%EC%BD%98%EC%84%9C%ED%8A%B8-%EC%98%88%EC%95%BD-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%EB%B6%84%EC%84%9D
 시퀀스 다이어그램 : https://github.com/jjd0922/hhplus-concert/wiki/%EC%8B%9C%ED%80%80%EC%8A%A4-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8
 플로우 차트 : https://github.com/jjd0922/hhplus-concert/wiki/%ED%94%8C%EB%A1%9C%EC%9A%B0-%EC%B0%A8%ED%8A%B8
 
-### [STEP-6]
+### [STEP-8]
 ERD 설계 : https://github.com/jjd0922/hhplus-concert/wiki/ERD-%EC%84%A4%EA%B3%84
 API 명세 : cc8d906
 mock api 구현 : 5e5893e
