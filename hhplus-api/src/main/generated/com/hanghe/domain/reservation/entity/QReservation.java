@@ -29,6 +29,8 @@ public class QReservation extends EntityPathBase<Reservation> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final DateTimePath<java.time.LocalDateTime> expiredAt = createDateTime("expiredAt", java.time.LocalDateTime.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
@@ -36,7 +38,7 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final com.hanghe.domain.payment.entity.QPayment payment;
 
-    public final SimplePath<ReservationTime> reservationTime = createSimple("reservationTime", ReservationTime.class);
+    public final DateTimePath<java.time.LocalDateTime> reservedAt = createDateTime("reservedAt", java.time.LocalDateTime.class);
 
     public final EnumPath<ReservationStatus> status = createEnum("status", ReservationStatus.class);
 
