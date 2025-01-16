@@ -6,8 +6,9 @@ import com.hanghe.domain.user.entity.User;
 import com.hanghe.domain.user.service.UserService;
 import com.hanghe.interfaces.queueToken.dto.response.QueueTokenIssueResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+@Service
 @RequiredArgsConstructor
 @Transactional
 public class QueueTokenFacade {

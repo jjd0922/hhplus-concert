@@ -6,10 +6,11 @@ import com.hanghe.domain.concert.service.dto.ConcertSeatDTO;
 import com.hanghe.interfaces.concert.dto.response.ConcertDateResponse;
 import com.hanghe.interfaces.concert.dto.response.ConcertSeatResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ConcertFacade {

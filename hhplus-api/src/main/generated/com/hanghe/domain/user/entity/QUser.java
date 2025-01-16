@@ -2,7 +2,6 @@ package com.hanghe.domain.user.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.hanghe.domain.queue.entity.QueueToken;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -37,7 +36,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<com.hanghe.domain.payment.entity.Payment, com.hanghe.domain.payment.entity.QPayment> paymentList = this.<com.hanghe.domain.payment.entity.Payment, com.hanghe.domain.payment.entity.QPayment>createList("paymentList", com.hanghe.domain.payment.entity.Payment.class, com.hanghe.domain.payment.entity.QPayment.class, PathInits.DIRECT2);
 
-    public final ListPath<QueueToken, com.hanghe.domain.payment.queue.entity.QQueueToken> userQueueListToken = this.<QueueToken, com.hanghe.domain.payment.queue.entity.QQueueToken>createList("userQueueListToken", QueueToken.class, com.hanghe.domain.payment.queue.entity.QQueueToken.class, PathInits.DIRECT2);
+    public final ListPath<com.hanghe.domain.queue.entity.QueueToken, com.hanghe.domain.queue.entity.QQueueToken> userQueueListToken = this.<com.hanghe.domain.queue.entity.QueueToken, com.hanghe.domain.queue.entity.QQueueToken>createList("userQueueListToken", com.hanghe.domain.queue.entity.QueueToken.class, com.hanghe.domain.queue.entity.QQueueToken.class, PathInits.DIRECT2);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

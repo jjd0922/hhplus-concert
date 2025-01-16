@@ -26,8 +26,6 @@ public class QConcertSchedule extends EntityPathBase<ConcertSchedule> {
 
     public final QConcert concert;
 
-    public final ListPath<ConcertSeat, QConcertSeat> concertSeatList = this.<ConcertSeat, QConcertSeat>createList("concertSeatList", ConcertSeat.class, QConcertSeat.class, PathInits.DIRECT2);
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
