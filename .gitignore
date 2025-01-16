@@ -65,3 +65,4 @@ out/
         echo "copy APPLE_SECRET_KEY"
         echo "${{ secrets.APPLE_SECRET_KEY }}" > ./AuthKey.p8
        shell: bash
+/hhplus-api/src/main/generated/

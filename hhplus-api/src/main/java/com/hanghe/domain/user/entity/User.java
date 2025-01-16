@@ -2,10 +2,10 @@ package com.hanghe.domain.user.entity;
 
 
 import com.hanghe.domain.base.BaseEntity;
-import com.hanghe.domain.base.enums.PaymentType;
-import com.hanghe.domain.base.enums.QueueStatus;
-import com.hanghe.domain.payment.emtity.Payment;
-import com.hanghe.domain.queueToken.entity.QueueToken;
+import com.hanghe.domain.payment.entity.PaymentType;
+import com.hanghe.domain.queue.entity.QueueStatus;
+import com.hanghe.domain.payment.entity.Payment;
+import com.hanghe.domain.queue.entity.QueueToken;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -45,20 +45,24 @@ public class User extends BaseEntity {
         }
     }
 
-    /** 잔액 update*/
-    public int updateBalance(){
-        int balance = 0;
-        for (Payment payment : paymentList) {
-            if(payment.getType().equals(PaymentType.CHARGE)){
-                balance += payment.getAmount();
-            }else if(payment.getType().equals(PaymentType.USE)){
-                balance -= payment.getAmount();
-            }
+    // 잔액 충전
+    public void chargeBalance(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("충전 금액은 0보다 커야 합니다.");
         }
-        return balance;
+        this.balance += amount;
     }
 
-
+    // 잔액 사용
+    public void useBalance(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("사용 금액은 0보다 커야 합니다.");
+        }
+        if (this.balance < amount) {
+            throw new RuntimeException("잔액이 부족합니다.");
+        }
+        this.balance -= amount;
+    }
 
 
 }

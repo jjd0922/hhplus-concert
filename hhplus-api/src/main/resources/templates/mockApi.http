@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### 예약 가능 좌석 조회 API
-POST http://localhost:8083/concert/possible-seat-check
+POST http://localhost:8083/concert/possible-concertSeat-check
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### 좌석 예약 요청 API
-POST http://localhost:8083/concert/seat/reservation
+POST http://localhost:8083/concert/concertSeat/reservation
 Content-Type: application/json
 
 {

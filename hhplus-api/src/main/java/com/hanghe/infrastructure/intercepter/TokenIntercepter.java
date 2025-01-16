@@ -1,7 +1,7 @@
 package com.hanghe.infrastructure.intercepter;
 
-import com.hanghe.apllication.service.QueueTokenService;
-import com.hanghe.infrastructure.annotation.NotTokenCheck;
+import com.hanghe.domain.queue.service.QueueTokenService;
+import com.hanghe.common.annotation.NotTokenCheck;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
