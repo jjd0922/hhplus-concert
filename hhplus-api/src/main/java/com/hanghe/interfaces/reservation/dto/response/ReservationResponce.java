@@ -18,8 +18,8 @@ public class ReservationResponce {
         return ReservationResponce.builder()
                 .reservationId(reservation.getId())
                 .status(reservation.getStatus().toString())
-                .reservedAt(reservation.getReservationTime().getReservedAt())
-                .expiredAt(reservation.getReservationTime().getExpiredAt())
+                .reservedAt(reservation.getReservedAt())
+                .expiredAt(reservation.getExpiredAt())
                 .build();
     }
 }

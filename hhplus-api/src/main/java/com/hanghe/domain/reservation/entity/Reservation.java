@@ -40,18 +40,20 @@ public class Reservation extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    private ReservationTime reservationTime;
+    private LocalDateTime reservedAt;
+    private LocalDateTime expiredAt;
 
-    private Reservation(User user, ConcertSeat concertSeat,ReservationStatus status, ReservationTime reservationTime) {
+    private Reservation(User user, ConcertSeat concertSeat,ReservationStatus status) {
         this.user = user;
         this.concertSeat = concertSeat;
         this.status = status;
-        this.reservationTime = reservationTime;
+        this.reservedAt = LocalDateTime.now();
+        this.expiredAt = LocalDateTime.now().plusMinutes(5);
     }
 
     /** 좌석 예약 */
     public static Reservation reserve(User user, ConcertSeat concertSeat) {
-        return new Reservation(user, concertSeat,ReservationStatus.WAIT, new ReservationTime(LocalDateTime.now(), Duration.ofMinutes(5)));
+        return new Reservation(user, concertSeat,ReservationStatus.WAIT);
     }
 
     /** 예약 완료 처리*/
