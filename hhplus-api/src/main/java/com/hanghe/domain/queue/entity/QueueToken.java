@@ -58,14 +58,14 @@ public class QueueToken extends BaseEntity{
     }
 
     /** 토큰 ACTIVE */
-    public void acticeToken() {
-       setStatus(QueueStatus.ACTIVE);
-       setExpiredAt(LocalDateTime.now().plusMinutes(5));
+    public void active() {
+        this.status = QueueStatus.ACTIVE;
+        this.expiredAt = LocalDateTime.now().plusMinutes(5);
     }
 
     /** 토큰 EXPIRE */
-    public void expireToken() {
-        setStatus(QueueStatus.EXPIRED);
+    public void expire() {
+        this.status = QueueStatus.EXPIRED;
     }
 
 }

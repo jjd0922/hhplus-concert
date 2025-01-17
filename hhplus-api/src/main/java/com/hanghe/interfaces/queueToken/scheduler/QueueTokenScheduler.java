@@ -18,7 +18,7 @@ public class QueueTokenScheduler {
             List<QueueToken> expiredTokens = queueTokenService.findQueueActiveTokenExpire();
             for (QueueToken expiredToken : expiredTokens) {
                 // 만료처리
-                expiredToken.expireToken();
+                expiredToken.expire();
                 // 대기 -> 입장
                 queueTokenService.activeWaitingToken();
             }

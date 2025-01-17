@@ -19,7 +19,6 @@ public class QueueTokenFacade {
     /** 토큰 발급 */
     public QueueTokenIssueResponse generateToken(Long userId) {
         User user = userService.findUser(userId);
-        userService.expireUserTokens(user);
         QueueToken queueToken = queueTokenService.generateToken(user);
         return QueueTokenIssueResponse.from(userId, queueToken.getToken(),queueToken.getExpiredAt());
     }

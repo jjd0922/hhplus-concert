@@ -23,6 +23,7 @@ public class QueueTokenService {
 
     /** 토큰 발급 */
     public QueueToken generateToken(User user) {
+        this.expireAllTokensForUser(user);
         QueueToken queueToken = QueueToken.generateToken(user);
         return queueTokenRepository.save(queueToken);
     }
@@ -32,6 +33,14 @@ public class QueueTokenService {
         User user = userService.findUser(userId);
         QueueToken queueToken = queueTokenRepository.findByUserAndToken(user,token);
         queueToken.validation();
+    }
+
+    /** 유저 전체 토큰 만료 */
+    public void expireAllTokensForUser(User user) {
+        List<QueueToken> tokens = queueTokenRepository.findByUser(user);
+        for (QueueToken token : tokens) {
+            token.expire();
+        }
     }
 
     /** 토큰 조회 */
@@ -46,6 +55,6 @@ public class QueueTokenService {
 
     /** 대기 토큰 입장*/
     public void activeWaitingToken() {
-        queueTokenRepository.findFirstByStatusOrderByIdAsc(QueueStatus.WAIT).acticeToken();
+        queueTokenRepository.findFirstByStatusOrderByIdAsc(QueueStatus.WAIT).active();
     }
 }
