@@ -30,15 +30,4 @@ public class ConcertSeat extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SeatStatus status;
 
-    private ConcertSeat(ConcertSchedule concertSchedule, int seatNo, int price, SeatStatus status) {
-        this.concertSchedule = concertSchedule;
-        this.no = seatNo;
-        this.price = price;
-        this.status = status;
-    }
-
-    public static ConcertSeat createAvailableSeat(ConcertSchedule concertSchedule, int seatNo, int price) {
-        return new ConcertSeat(concertSchedule, seatNo, price, SeatStatus.AVAILABLE);
-    }
-
 }

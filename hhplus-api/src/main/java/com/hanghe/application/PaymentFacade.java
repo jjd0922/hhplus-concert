@@ -24,6 +24,7 @@ public class PaymentFacade {
     public PaymentChargeResponse charge(PaymentChargeRequest requestBody){
         User user = userService.findUser(requestBody.getUserId());
         PaymentChargeDTO dto = paymentService.charge(user,requestBody.getBalance());
+        user.chargeBalance(requestBody.getBalance());
         return PaymentChargeResponse.from(dto,userService.findUserBalance(user.getId()).balance());
     }
 
@@ -31,6 +32,7 @@ public class PaymentFacade {
     public PaymentUseResponse use(PaymentUseRequest requestBody){
         User user = userService.findUser(requestBody.getUserId());
         PaymentUseDTO dto = paymentService.use(user,requestBody.getBalance());
+        user.useBalance(requestBody.getBalance());
         return PaymentUseResponse.from(dto,userService.findUserBalance(user.getId()).balance());
     }
 }

@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -33,10 +32,6 @@ public class QUser extends EntityPathBase<User> {
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
     public final StringPath name = createString("name");
-
-    public final ListPath<com.hanghe.domain.payment.entity.Payment, com.hanghe.domain.payment.entity.QPayment> paymentList = this.<com.hanghe.domain.payment.entity.Payment, com.hanghe.domain.payment.entity.QPayment>createList("paymentList", com.hanghe.domain.payment.entity.Payment.class, com.hanghe.domain.payment.entity.QPayment.class, PathInits.DIRECT2);
-
-    public final ListPath<com.hanghe.domain.queue.entity.QueueToken, com.hanghe.domain.queue.entity.QQueueToken> userQueueListToken = this.<com.hanghe.domain.queue.entity.QueueToken, com.hanghe.domain.queue.entity.QQueueToken>createList("userQueueListToken", com.hanghe.domain.queue.entity.QueueToken.class, com.hanghe.domain.queue.entity.QQueueToken.class, PathInits.DIRECT2);
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));

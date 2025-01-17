@@ -30,19 +30,8 @@ public class User extends BaseEntity {
     private String name;
     private int balance;
 
-    @OneToMany(mappedBy = "user")
-    private List<QueueToken> userQueueListToken;
-
-    @OneToMany(mappedBy = "user")
-    private List<Payment> paymentList;
-
-    /** 해당 유저 전체 토큰 만료*/
-    public void setUserTokenExpire(){
-        if(userQueueListToken.size() > 0){
-            for (QueueToken queueToken : userQueueListToken) {
-                queueToken.setStatus(QueueStatus.EXPIRED);
-            }
-        }
+    public static User create(Long id, String name) {
+        return new User(id,name,0);
     }
 
     // 잔액 충전

@@ -43,6 +43,7 @@ subprojects{
 
 		runtimeOnly 'mysql:mysql-connector-java'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'org.mockito:mockito-inline:5.x.x'
 
 		// QueryDSL
 		implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'

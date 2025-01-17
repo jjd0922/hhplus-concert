@@ -31,18 +31,26 @@ public class Payment extends BaseEntity {
     private int amount;
 
     private Payment(User user, int amount, PaymentType type) {
+        validateInputs(user, amount, type);
         this.user = user;
         this.amount = amount;
         this.type = type;
     }
 
     public static Payment create(User user, int amount, PaymentType type) {
-        if (type == PaymentType.CHARGE) {
-            user.chargeBalance(amount);
-        } else if (type == PaymentType.USE) {
-            user.useBalance(amount);
-        }
-        return new Payment(user, amount, type);
+        Payment payment = new Payment(user, amount, type);
+        return payment;
     }
 
+    private void validateInputs(User user, int amount, PaymentType type) {
+        if (user == null) {
+            throw new NullPointerException("User null입니다.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("PaymentType null입니다.");
+        }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("금액은 0보다 커야 합니다.");
+        }
+    }
 }

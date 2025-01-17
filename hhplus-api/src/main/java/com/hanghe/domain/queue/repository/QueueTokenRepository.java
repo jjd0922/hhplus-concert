@@ -18,4 +18,6 @@ public interface QueueTokenRepository extends JpaRepository<QueueToken,Long> {
     List<QueueToken> findAllByStatusAndExpiredAt(QueueStatus status, LocalDateTime date);
 
     QueueToken findFirstByStatusOrderByIdAsc(QueueStatus status);
+
+    List<QueueToken> findByUser(User user);
 }
