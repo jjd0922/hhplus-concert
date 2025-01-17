@@ -17,6 +17,12 @@ public class ReservationService {
 
     /** 콘서트 좌석 예약 */
     public ReservationResponce seatReserve(User user, ConcertSeat concertSeat){
+        if (user == null) {
+            throw new NullPointerException("User가 null입니다.");
+        }
+        if (concertSeat == null) {
+            throw new NullPointerException("ConcertSeat가 null입니다.");
+        }
         Reservation reservation = Reservation.reserve(user, concertSeat);
         reservationRepository.save(reservation);
         return ReservationResponce.from(reservation);

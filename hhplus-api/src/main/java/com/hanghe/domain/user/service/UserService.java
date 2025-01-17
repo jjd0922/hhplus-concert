@@ -28,8 +28,4 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 유저가 없습니다."));
     }
 
-    /** 유저의 기존 토큰 만료 처리 */
-    public void expireUserTokens(User user) {
-        user.setUserTokenExpire();
-    }
 }

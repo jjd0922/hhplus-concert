@@ -72,7 +72,7 @@ public class Reservation extends BaseEntity {
         if (this.status == ReservationStatus.CANCEL) {
             throw new IllegalStateException("이미 취소된 좌석입니다.");
         }
-        this.status = ReservationStatus.COMPLETE;
+        this.status = ReservationStatus.CANCEL;
     }
 
 }
