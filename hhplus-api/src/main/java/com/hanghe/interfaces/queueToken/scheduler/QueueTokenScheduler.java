@@ -4,15 +4,16 @@ import com.hanghe.domain.queue.service.QueueTokenService;
 import com.hanghe.domain.queue.entity.QueueToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 @RequiredArgsConstructor
 public class QueueTokenScheduler {
 
     private final QueueTokenService queueTokenService;
 
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 2000)
     public void queueTokenValidation() {
         try {
             List<QueueToken> expiredTokens = queueTokenService.findQueueActiveTokenExpire();

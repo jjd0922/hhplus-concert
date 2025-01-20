@@ -2,8 +2,8 @@ package com.hanghe.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanghe.domain.concert.entity.ConcertSchedule;
 import com.hanghe.domain.concert.repository.ConcertScheduleRepository;
-import com.hanghe.presentation.concert.dto.request.ConcertSeatRequest;
-import com.hanghe.presentation.concert.dto.request.ConcertSeatReservationRequest;
+import com.hanghe.interfaces.concert.dto.request.ConcertSeatRequest;
+import com.hanghe.interfaces.reservation.dto.request.ReservationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class ConcertControllerTest {
     @DisplayName("좌석 예약 테스트")
     void seatReservationTest() throws Exception {
         // given
-        ConcertSeatReservationRequest request = ConcertSeatReservationRequest.builder()
+        ReservationRequest request = ReservationRequest.builder()
                 .userId(1L)
                 .seatId(10L)
                 .build();

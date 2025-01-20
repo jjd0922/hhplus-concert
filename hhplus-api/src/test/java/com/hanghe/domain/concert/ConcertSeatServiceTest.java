@@ -8,14 +8,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 public class ConcertSeatServiceTest {
 
     @InjectMocks
@@ -23,11 +24,6 @@ public class ConcertSeatServiceTest {
 
     @Mock
     private ConcertSeatRepository concertSeatRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("좌석 정상 조회")

@@ -9,15 +9,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 public class ConcertServiceTest {
 
     @InjectMocks
@@ -28,11 +30,6 @@ public class ConcertServiceTest {
 
     @Mock
     private ConcertSeatRepositoryImpl concertSeatRepositoryImpl;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("콘서트 예약 가능 날짜 정상 조회")
