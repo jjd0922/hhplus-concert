@@ -1,5 +1,7 @@
 package com.hanghe.domain.queue.entity;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.base.BaseEntity;
 import com.hanghe.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -47,13 +49,13 @@ public class QueueToken extends BaseEntity{
     public void validation(){
         switch (status) {
             case EXPIRED:
-                throw new RuntimeException("토큰이 만료되었습니다.");
+                throw new BusinessException(ErrorCode.TOKEN_EXPIRED);
             case WAIT:
-                throw new RuntimeException("입장 대기 중인 토큰입니다.");
+                throw new BusinessException(ErrorCode.TOKEN_WAIT);
             case ACTIVE:
                 break;
             default:
-                throw new RuntimeException("유효하지 않은 토큰 상태입니다.");
+                throw new BusinessException(ErrorCode.TOKEN_INVALID);
         }
     }
 

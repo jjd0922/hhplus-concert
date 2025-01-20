@@ -1,6 +1,8 @@
 package com.hanghe.domain.user.entity;
 
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.base.BaseEntity;
 import com.hanghe.domain.payment.entity.PaymentType;
 import com.hanghe.domain.queue.entity.QueueStatus;
@@ -37,7 +39,7 @@ public class User extends BaseEntity {
     // 잔액 충전
     public void chargeBalance(int amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("충전 금액은 0보다 커야 합니다.");
+            throw new BusinessException(ErrorCode.USER_MINUS_AMOUNT);
         }
         this.balance += amount;
     }
@@ -45,10 +47,10 @@ public class User extends BaseEntity {
     // 잔액 사용
     public void useBalance(int amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("사용 금액은 0보다 커야 합니다.");
+            throw new BusinessException(ErrorCode.USER_MINUS_AMOUNT);
         }
         if (this.balance < amount) {
-            throw new RuntimeException("잔액이 부족합니다.");
+            throw new BusinessException(ErrorCode.USER_MINUS_AMOUNT);
         }
         this.balance -= amount;
     }

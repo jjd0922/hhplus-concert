@@ -1,5 +1,7 @@
 package com.hanghe.domain.concert.service;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.concert.service.dto.ConcertScheduleDTO;
 import com.hanghe.domain.concert.service.dto.ConcertSeatDTO;
 import com.hanghe.infrastructure.concert.repository.ConcertScheduleRepositoryImpl;
@@ -21,7 +23,7 @@ public class ConcertService {
     /** 콘서트 예약 가능 날짜 조회*/
     public List<ConcertScheduleDTO> findAllConcertScheduleDate(Long concertId){
         if (concertId == null) {
-            throw new IllegalArgumentException("Invalid concertId");
+            throw new BusinessException(ErrorCode.CONCERT_NOT_FOUND);
         }
         LocalDate today = LocalDate.now();
         LocalDate nextMonth = today.plusMonths(1);
@@ -31,7 +33,7 @@ public class ConcertService {
     /** 콘서트 예약 가능 좌석 조회*/
     public List<ConcertSeatDTO> findAllConcsertScheduleSeat(Long concertScheduleId){
         if (concertScheduleId == null) {
-            throw new IllegalArgumentException("Invalid concertScheduleId");
+            throw new BusinessException(ErrorCode.CONCERT_SCEDULE_NOT_FOUND);
         }
         return concertSeatRepositoryImpl.findAvailableSeatsByConcertScheduleId(concertScheduleId);
     }

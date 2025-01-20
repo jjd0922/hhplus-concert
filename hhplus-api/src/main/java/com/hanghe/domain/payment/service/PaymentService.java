@@ -1,5 +1,7 @@
 package com.hanghe.domain.payment.service;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.payment.entity.PaymentType;
 import com.hanghe.domain.payment.entity.Payment;
 import com.hanghe.domain.payment.repository.PaymentRepository;
@@ -34,7 +36,7 @@ public class PaymentService {
     /** 유저 잔액 결제*/
     public PaymentUseDTO use(User user, int amount){
         if (user.getBalance() < amount) {
-            throw new RuntimeException("잔액이 부족합니다.");
+            throw new BusinessException(ErrorCode.PAYMENT_INSUFFICIENT_BALANCE);
         }
         Payment payment = Payment.create(user,amount,PaymentType.USE);
         paymentRepository.save(payment);

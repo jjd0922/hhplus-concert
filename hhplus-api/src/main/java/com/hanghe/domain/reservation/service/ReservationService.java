@@ -1,5 +1,7 @@
 package com.hanghe.domain.reservation.service;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.concert.entity.ConcertSeat;
 import com.hanghe.domain.reservation.entity.Reservation;
 import com.hanghe.domain.reservation.repository.ReservationRepository;
@@ -18,10 +20,10 @@ public class ReservationService {
     /** 콘서트 좌석 예약 */
     public ReservationResponce seatReserve(User user, ConcertSeat concertSeat){
         if (user == null) {
-            throw new NullPointerException("User가 null입니다.");
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
         }
         if (concertSeat == null) {
-            throw new NullPointerException("ConcertSeat가 null입니다.");
+            throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
         }
         Reservation reservation = Reservation.reserve(user, concertSeat);
         reservationRepository.save(reservation);
