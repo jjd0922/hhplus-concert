@@ -1,14 +1,10 @@
 package com.hanghe.interfaces.concert.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
+public record ConcertSeatRequest(
+        @JsonProperty("concertScheduleId")
+        Long concertScheduleId
+) {
 
-@Builder
-@Getter
-public class ConcertSeatRequest {
-    Long userId;
-    String token;
-    LocalDate date;
 }

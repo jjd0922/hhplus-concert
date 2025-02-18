@@ -1,27 +1,28 @@
 package com.hanghe.interfaces.concert.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hanghe.domain.concert.service.dto.ConcertSeatDTO;
-import lombok.Builder;
-import lombok.Getter;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
-@Builder
-@Getter
 public class ConcertSeatResponse {
 
+    @JsonProperty("seatId")
     private Long seatId;
-    private int seatNo;
-    private int price;
+    @JsonProperty("seatNo")
+    private Long seatNo;
+    @JsonProperty("price")
+    private Long price;
 
+    public ConcertSeatResponse(Long seatId,Long seatNo,Long price){
+        this.seatId = seatId;
+        this.seatNo = seatNo;
+        this.price = price;
+    }
+
+    public Long getSeatId(){return seatId;}
+    public Long getSeatNo(){return seatNo;}
+    public Long getPrice(){return price;}
     public static ConcertSeatResponse from(ConcertSeatDTO dto) {
-        return ConcertSeatResponse.builder()
-                .seatId(dto.id())
-                .seatNo(dto.seatNo())
-                .price(dto.price())
-                .build();
+        return new ConcertSeatResponse(dto.seatId(),dto.seatNo(),dto.price());
     }
 }
 

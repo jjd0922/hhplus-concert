@@ -1,5 +1,7 @@
 package com.hanghe.domain.queue;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.queue.entity.QueueStatus;
 import com.hanghe.domain.queue.entity.QueueToken;
 import com.hanghe.domain.queue.repository.QueueTokenRepository;
@@ -8,13 +10,13 @@ import com.hanghe.domain.user.entity.User;
 import com.hanghe.domain.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class QueueTokenServiceTest {
 
     @InjectMocks
@@ -33,11 +36,6 @@ public class QueueTokenServiceTest {
 
     @Mock
     private QueueTokenRepository queueTokenRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("토큰 정상 발급")
@@ -100,7 +98,7 @@ public class QueueTokenServiceTest {
         // Given
         Long tokenId = 1L;
         QueueToken mockToken = mock(QueueToken.class);
-        when(queueTokenRepository.findById(tokenId)).thenReturn(Optional.of(mockToken));
+        when(queueTokenRepository.findById(tokenId)).thenReturn(mockToken);
 
         // When
         QueueToken result = queueTokenService.findQueueToken(tokenId);
@@ -116,14 +114,13 @@ public class QueueTokenServiceTest {
     void findQueueToken_ShouldThrowException_WhenTokenDoesNotExist() {
         // Given
         Long tokenId = 1L;
-        when(queueTokenRepository.findById(tokenId)).thenReturn(Optional.empty());
+        when(queueTokenRepository.findById(tokenId)).thenThrow(new BusinessException(ErrorCode.TOKEN_INVALID));
 
         // When & Then
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             queueTokenService.findQueueToken(tokenId);
         });
-
-        Assertions.assertEquals("해당 토큰이 없습니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.TOKEN_INVALID, exception.getErrorCode());
         verify(queueTokenRepository, times(1)).findById(tokenId);
     }
 

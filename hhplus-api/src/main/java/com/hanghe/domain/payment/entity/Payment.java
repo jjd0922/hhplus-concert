@@ -1,9 +1,12 @@
 package com.hanghe.domain.payment.entity;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.base.BaseEntity;
 import com.hanghe.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,29 +31,29 @@ public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private PaymentType type;
 
-    private int amount;
+    private Long amount;
 
-    private Payment(User user, int amount, PaymentType type) {
+    private Payment(User user, Long amount, PaymentType type) {
         validateInputs(user, amount, type);
         this.user = user;
         this.amount = amount;
         this.type = type;
     }
 
-    public static Payment create(User user, int amount, PaymentType type) {
+    public static Payment create(User user, Long amount, PaymentType type) {
         Payment payment = new Payment(user, amount, type);
         return payment;
     }
 
-    private void validateInputs(User user, int amount, PaymentType type) {
+    private void validateInputs(User user, Long amount, PaymentType type) {
         if (user == null) {
-            throw new NullPointerException("User null입니다.");
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
         }
         if (type == null) {
-            throw new IllegalArgumentException("PaymentType null입니다.");
+            throw new BusinessException(ErrorCode.PAYMENT_NOT_FOUND);
         }
         if (amount <= 0) {
-            throw new IllegalArgumentException("금액은 0보다 커야 합니다.");
+            throw new BusinessException(ErrorCode.PAYMENT_MINUS_AMOUNT);
         }
     }
 }

@@ -24,7 +24,8 @@ public class Concert extends BaseEntity {
 
     private String title;
 
-    @OneToMany(mappedBy = "concert")
-    private List<ConcertSchedule> concertScheduleList;
 
+    public static Concert create(Long id, String title) {
+        return new Concert(id,title);
+    }
 }

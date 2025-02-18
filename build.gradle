@@ -38,12 +38,14 @@ subprojects{
 		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 		implementation 'com.h2database:h2'
 
+		// docker redis
+		implementation 'org.redisson:redisson-spring-boot-starter:3.43.0'
+
 		testImplementation 'org.testcontainers:junit-jupiter'
 		testImplementation 'org.testcontainers:mysql'
 
 		runtimeOnly 'mysql:mysql-connector-java'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
-		testImplementation 'org.mockito:mockito-inline:5.x.x'
 
 		// QueryDSL
 		implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -53,7 +55,9 @@ subprojects{
 
 		// swagger
 		implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+
 	}
+
 
 	def generated = 'src/main/generated'
 	tasks.withType(JavaCompile) {

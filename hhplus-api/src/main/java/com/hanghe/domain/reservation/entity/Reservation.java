@@ -1,5 +1,7 @@
 package com.hanghe.domain.reservation.entity;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.base.BaseEntity;
 import com.hanghe.domain.concert.entity.ConcertSeat;
 import com.hanghe.domain.payment.entity.Payment;
@@ -43,6 +45,9 @@ public class Reservation extends BaseEntity {
     private LocalDateTime reservedAt;
     private LocalDateTime expiredAt;
 
+    @Version
+    private int version;
+
     private Reservation(User user, ConcertSeat concertSeat,ReservationStatus status) {
         this.user = user;
         this.concertSeat = concertSeat;
@@ -59,10 +64,10 @@ public class Reservation extends BaseEntity {
     /** 예약 완료 처리*/
     public void complete() {
         if (this.status == ReservationStatus.COMPLETE) {
-            throw new IllegalStateException("이미 예약 완료된 좌석입니다.");
+            throw new BusinessException(ErrorCode.RESERVATION_COMPLETE);
         }
         if (this.status == ReservationStatus.CANCEL) {
-            throw new IllegalStateException("취소된 예약 좌석 입니다.");
+            throw new BusinessException(ErrorCode.RESERVATION_CANCEL);
         }
         this.status = ReservationStatus.COMPLETE;
     }
@@ -70,7 +75,7 @@ public class Reservation extends BaseEntity {
     /** 예약 취소 처리*/
     public void cancel() {
         if (this.status == ReservationStatus.CANCEL) {
-            throw new IllegalStateException("이미 취소된 좌석입니다.");
+            throw new BusinessException(ErrorCode.RESERVATION_CANCEL);
         }
         this.status = ReservationStatus.CANCEL;
     }

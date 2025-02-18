@@ -30,6 +30,10 @@ public class ConcertSchedule extends BaseEntity {
     private LocalDate performanceDate;
     private int seatLimit;
 
+    public static ConcertSchedule create(Long id, Concert concert, LocalDate date, int limit) {
+        return new ConcertSchedule(id,concert,date, limit);
+    }
+
 }
 
 

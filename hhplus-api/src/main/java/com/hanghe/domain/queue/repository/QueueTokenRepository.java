@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface QueueTokenRepository extends JpaRepository<QueueToken,Long> {
+public interface QueueTokenRepository {
 
-    /** 상태값에 따른 대기열 count */
+    QueueToken save(QueueToken queueToken);
+    List<QueueToken> saveAll(List<QueueToken> queueTokens);
+    QueueToken findById(Long queueTokenId);
     int countByStatus(QueueStatus status);
 
     QueueToken findByUserAndToken(User user, String token);

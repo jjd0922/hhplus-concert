@@ -1,6 +1,7 @@
 package com.hanghe.interfaces.payment.controller;
 
 import com.hanghe.application.PaymentFacade;
+import com.hanghe.common.annotation.NotTokenCheck;
 import com.hanghe.interfaces.payment.dto.request.PaymentChargeRequest;
 import com.hanghe.interfaces.payment.dto.request.PaymentUseRequest;
 import com.hanghe.interfaces.payment.dto.response.PaymentChargeResponse;
@@ -20,6 +21,7 @@ public class PaymentController {
     private final PaymentFacade paymentFacade;
 
     /** 결제 충전 */
+    @NotTokenCheck
     @PostMapping("/charge")
     public ResponseEntity<PaymentChargeResponse> paymentCharge(@RequestBody PaymentChargeRequest requestBody) {
         return ResponseEntity.ok(paymentFacade.charge(requestBody));

@@ -1,19 +1,24 @@
 package com.hanghe.controller;
 
-import com.hanghe.domain.user.entity.User;
-import com.hanghe.domain.user.repository.UserRepository;
+import com.hanghe.application.UserFacade;
+
+import com.hanghe.domain.user.service.dto.UserBalanceDTO;
+import com.hanghe.interfaces.user.dto.response.UserBalanceResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
@@ -21,26 +26,24 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserRepository userRepository;
+    @MockBean
+    private UserFacade userFacade;
 
     @Test
     @DisplayName("사용자 잔액 조회 통합 테스트")
     void selectUserBalanceTest() throws Exception {
-        // given
-        User user = User.builder()
-                .id(1L)
-                .name("테스트 유저")
-                .balance(5000)
-                .build();
-        userRepository.save(user);
+        // Given
+        Long userId = 1L;
+        UserBalanceResponse response = UserBalanceResponse.from(new UserBalanceDTO(userId,1000L));
 
-        // when & then
-        mockMvc.perform(get("/users/balance/{userId}", user.getId())
+        when(userFacade.findUserBalance(anyLong())).thenReturn(response);
+
+        // When & Then
+        mockMvc.perform(MockMvcRequestBuilders.get("/users/balance/{userId}", userId)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(user.getId()))
-                .andExpect(jsonPath("$.balance").value(5000))
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.balance").value(1000L));
     }
+
 }

@@ -1,6 +1,6 @@
 package com.hanghe.common.configuration;
 
-import com.hanghe.infrastructure.intercepter.TokenIntercepter;
+import com.hanghe.infrastructure.intercepter.QueueIntercepter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,15 +8,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final TokenIntercepter tokenIntercepter;
+    private final QueueIntercepter queueIntercepter;
 
-    public WebConfig(TokenIntercepter tokenIntercepter) {
-        this.tokenIntercepter = tokenIntercepter;
+    public WebConfig(QueueIntercepter queueIntercepter) {
+        this.queueIntercepter = queueIntercepter;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenIntercepter)
+        registry.addInterceptor(queueIntercepter)
                 .addPathPatterns("/api/**");
     }
 }

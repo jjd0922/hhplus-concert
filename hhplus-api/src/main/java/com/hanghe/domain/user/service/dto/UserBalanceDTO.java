@@ -1,4 +1,4 @@
 package com.hanghe.domain.user.service.dto;
 
-public record UserBalanceDTO(int balance) {
+public record UserBalanceDTO(Long userId, Long balance) {
 }

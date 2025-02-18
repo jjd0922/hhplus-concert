@@ -1,23 +1,25 @@
 package com.hanghe.domain.concert;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.concert.service.ConcertService;
 import com.hanghe.domain.concert.service.dto.ConcertScheduleDTO;
 import com.hanghe.domain.concert.service.dto.ConcertSeatDTO;
-import com.hanghe.infrastructure.concert.repository.ConcertScheduleRepositoryImpl;
-import com.hanghe.infrastructure.concert.repository.ConcertSeatRepositoryImpl;
+import com.hanghe.infrastructure.concert.schedule.ConcertScheduleRepositoryImpl;
+import com.hanghe.infrastructure.concert.seat.ConcertSeatRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 public class ConcertServiceTest {
 
     @InjectMocks
@@ -28,11 +30,6 @@ public class ConcertServiceTest {
 
     @Mock
     private ConcertSeatRepositoryImpl concertSeatRepositoryImpl;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     @DisplayName("콘서트 예약 가능 날짜 정상 조회")
@@ -65,11 +62,11 @@ public class ConcertServiceTest {
         Long concertId = null;
 
         // When & Then
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             concertService.findAllConcertScheduleDate(concertId);
         });
 
-        Assertions.assertEquals("Invalid concertId", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.CONCERT_NOT_FOUND, exception.getErrorCode());
         verifyNoInteractions(concertScheduleRepositoryImpl);
     }
 
@@ -79,8 +76,8 @@ public class ConcertServiceTest {
         // Given
         Long concertScheduleId = 1L;
         List<ConcertSeatDTO> mockSeats = List.of(
-                new ConcertSeatDTO(concertScheduleId, 1, 10000),
-                new ConcertSeatDTO(concertScheduleId, 2, 20000)
+                new ConcertSeatDTO(concertScheduleId, 1L, 10000L),
+                new ConcertSeatDTO(concertScheduleId, 2L, 20000L)
         );
         when(concertSeatRepositoryImpl.findAvailableSeatsByConcertScheduleId(concertScheduleId))
                 .thenReturn(mockSeats);
@@ -102,11 +99,11 @@ public class ConcertServiceTest {
         Long concertScheduleId = null;
 
         // When & Then
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             concertService.findAllConcsertScheduleSeat(concertScheduleId);
         });
 
-        Assertions.assertEquals("Invalid concertScheduleId", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.CONCERT_SCEDULE_NOT_FOUND, exception.getErrorCode());
         verifyNoInteractions(concertSeatRepositoryImpl);
     }
 }

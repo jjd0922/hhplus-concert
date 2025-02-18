@@ -1,13 +1,12 @@
 package com.hanghe.interfaces.payment.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Builder
-@Getter
-public class PaymentUseRequest {
-    Long userId;
-    String token;
-    Long seatId;
-    int balance;
+public record PaymentUseRequest(
+        @JsonProperty("userId") Long userId,
+        @JsonProperty("token") String token,
+        @JsonProperty("reservationId") Long reservationId,
+        @JsonProperty("balance") Long balance
+) {
+
 }

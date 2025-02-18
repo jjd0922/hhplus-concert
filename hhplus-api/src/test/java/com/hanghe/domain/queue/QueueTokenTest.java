@@ -1,5 +1,7 @@
 package com.hanghe.domain.queue;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.queue.entity.QueueStatus;
 import com.hanghe.domain.queue.entity.QueueToken;
 import com.hanghe.domain.user.entity.User;
@@ -39,8 +41,10 @@ public class QueueTokenTest {
                 .build();
 
         // When & Then
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, token::validation);
-        Assertions.assertEquals("토큰이 만료되었습니다.", exception.getMessage());
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
+            token.validation();
+        });
+        Assertions.assertEquals(ErrorCode.TOKEN_EXPIRED, exception.getErrorCode());
     }
 
     @Test
@@ -52,8 +56,10 @@ public class QueueTokenTest {
                 .build();
 
         // When & Then
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, token::validation);
-        Assertions.assertEquals("입장 대기 중인 토큰입니다.", exception.getMessage());
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
+            token.validation();
+        });
+        Assertions.assertEquals(ErrorCode.TOKEN_WAIT, exception.getErrorCode());
     }
 
     @Test
