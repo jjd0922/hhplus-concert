@@ -1,5 +1,7 @@
 package com.hanghe.domain.payment;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.payment.entity.Payment;
 import com.hanghe.domain.payment.entity.PaymentType;
 import com.hanghe.domain.user.entity.User;
@@ -16,7 +18,7 @@ public class PaymentTest {
     void createPayment_Charge_ShouldSucceed() {
         // given
         User mockUser = mock(User.class);
-        int amount = 1000;
+        Long amount = 1000L;
 
         // when
         Payment payment = Payment.create(mockUser, amount, PaymentType.CHARGE);
@@ -32,7 +34,7 @@ public class PaymentTest {
     void createPayment_Use_ShouldSucceed() {
         // given
         User mockUser = mock(User.class);
-        int amount = 1000;
+        Long amount = 1000L;
 
         // when
         Payment payment = Payment.create(mockUser, amount, PaymentType.USE);
@@ -48,14 +50,16 @@ public class PaymentTest {
     void createPayment_InvalidType_ShouldThrowException() {
         // given
         User mockUser = mock(User.class);
-        int amount = 50;
+        Long amount = 50L;
 
         // when
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             Payment.create(mockUser, amount, null); // 유효하지 않은 타입
         });
+
         // then
-        Assertions.assertEquals("PaymentType null입니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.PAYMENT_NOT_FOUND, exception.getErrorCode());
+
     }
 
     @Test
@@ -63,14 +67,14 @@ public class PaymentTest {
     void createPayment_Charge_UserNull_ShouldThrowException() {
         // given
         User nullUser = null;
-        int amount = 1000;
+        Long amount = 1000L;
 
         // when
-        NullPointerException exception = Assertions.assertThrows(NullPointerException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             Payment.create(nullUser, amount, PaymentType.CHARGE);
         });
         // then
-        Assertions.assertEquals("User null입니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.USER_NOT_FOUND, exception.getErrorCode());
     }
 
     @Test
@@ -78,13 +82,13 @@ public class PaymentTest {
     void createPayment_Use_InvalidAmount_ShouldThrowException() {
         // given
         User mockUser = mock(User.class);
-        int invalidAmount = -1000;
+        Long invalidAmount = -1000L;
 
         // when
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             Payment.create(mockUser, invalidAmount, PaymentType.USE);
         });
         // then
-        Assertions.assertEquals("금액은 0보다 커야 합니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.PAYMENT_MINUS_AMOUNT, exception.getErrorCode());
     }
 }

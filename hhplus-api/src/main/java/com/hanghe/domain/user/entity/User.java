@@ -30,14 +30,17 @@ public class User extends BaseEntity {
     private Long id;
 
     private String name;
-    private int balance;
+    private Long balance;
+
+    @Version
+    private Long version;
 
     public static User create(Long id, String name) {
-        return new User(id,name,0);
+        return new User(id,name,0L,0L);
     }
 
     // 잔액 충전
-    public void chargeBalance(int amount) {
+    public void chargeBalance(Long amount) {
         if (amount <= 0) {
             throw new BusinessException(ErrorCode.USER_MINUS_AMOUNT);
         }
@@ -45,7 +48,7 @@ public class User extends BaseEntity {
     }
 
     // 잔액 사용
-    public void useBalance(int amount) {
+    public void useBalance(Long amount) {
         if (amount <= 0) {
             throw new BusinessException(ErrorCode.USER_MINUS_AMOUNT);
         }

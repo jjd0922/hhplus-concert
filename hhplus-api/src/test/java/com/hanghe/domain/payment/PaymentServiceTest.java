@@ -1,5 +1,7 @@
 package com.hanghe.domain.payment;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.payment.entity.Payment;
 import com.hanghe.domain.payment.entity.PaymentType;
 import com.hanghe.domain.payment.repository.PaymentRepository;
@@ -33,7 +35,7 @@ public class PaymentServiceTest {
     void charge_ShouldSucceed_WhenValidRequest() {
         // Given
         User mockUser = mock(User.class);
-        int amount = 100;
+        Long amount = 100L;
         Payment mockPayment = mock(Payment.class);
 
         try (MockedStatic<Payment> mockedPayment = mockStatic(Payment.class)) {
@@ -54,9 +56,9 @@ public class PaymentServiceTest {
     void use_ShouldSucceed_WhenValidRequest() {
         // Given
         User mockUser = mock(User.class);
-        int amount = 50;
+        Long amount = 50L;
         Payment mockPayment = mock(Payment.class);
-        when(mockUser.getBalance()).thenReturn(1000);
+        when(mockUser.getBalance()).thenReturn(1000L);
 
         try (MockedStatic<Payment> mockedPayment = mockStatic(Payment.class)) {
             mockedPayment.when(() -> Payment.create(mockUser, amount, PaymentType.USE)).thenReturn(mockPayment);
@@ -76,14 +78,14 @@ public class PaymentServiceTest {
     void use_ShouldThrowException_WhenInsufficientBalance() {
         // Given
         User mockUser = mock(User.class);
-        int amount = 200;
-        when(mockUser.getBalance()).thenReturn(100);
+        Long amount = 200L;
+        when(mockUser.getBalance()).thenReturn(100L);
 
         // When & Then
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             paymentService.use(mockUser, amount);
         });
-        Assertions.assertEquals("잔액이 부족합니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.PAYMENT_INSUFFICIENT_BALANCE, exception.getErrorCode());
         verify(paymentRepository, times(0)).save(any());
     }
 }

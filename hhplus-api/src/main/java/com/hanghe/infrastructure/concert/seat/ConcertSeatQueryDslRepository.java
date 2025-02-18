@@ -1,24 +1,30 @@
-package com.hanghe.infrastructure.concert.repository;
+package com.hanghe.infrastructure.concert.seat;
 
+import com.hanghe.domain.concert.entity.ConcertSeat;
 import com.hanghe.domain.concert.entity.QConcertSchedule;
 import com.hanghe.domain.concert.entity.QConcertSeat;
 import com.hanghe.domain.concert.entity.SeatStatus;
-import com.hanghe.domain.concert.repository.custom.ConcertSeatRepositoryCustom;
-import com.hanghe.domain.concert.service.dto.ConcertScheduleDTO;
 import com.hanghe.domain.concert.service.dto.ConcertSeatDTO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class ConcertSeatRepositoryImpl implements ConcertSeatRepositoryCustom {
+public class ConcertSeatQueryDslRepository {
+
     private final JPAQueryFactory queryFactory;
 
-    @Override
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public List<ConcertSeatDTO> findAvailableSeatsByConcertScheduleId(Long concertScheduleId) {
         QConcertSeat concertSeat = QConcertSeat.concertSeat;
         QConcertSchedule concertSchedule = QConcertSchedule.concertSchedule;
@@ -37,6 +43,10 @@ public class ConcertSeatRepositoryImpl implements ConcertSeatRepositoryCustom {
                 )
                 .fetch();
 
+    }
+
+    public Optional<ConcertSeat> findConcertSeatWithPessimisticLock(Long seatId){
+        return Optional.ofNullable(entityManager.find(ConcertSeat.class, seatId, LockModeType.PESSIMISTIC_WRITE));
     }
 
 }

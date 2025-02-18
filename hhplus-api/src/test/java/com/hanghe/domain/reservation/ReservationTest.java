@@ -1,5 +1,7 @@
 package com.hanghe.domain.reservation;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.concert.entity.ConcertSeat;
 import com.hanghe.domain.reservation.entity.Reservation;
 import com.hanghe.domain.reservation.entity.ReservationStatus;
@@ -56,9 +58,12 @@ public class ReservationTest {
         Reservation reservation = Reservation.reserve(mockUser, mockSeat);
         reservation.complete();
 
-        // When & Then
-        IllegalStateException exception = Assertions.assertThrows(IllegalStateException.class, reservation::complete);
-        Assertions.assertEquals("이미 예약 완료된 좌석입니다.", exception.getMessage());
+        // when
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
+            reservation.complete();
+        });
+
+        Assertions.assertEquals(ErrorCode.RESERVATION_COMPLETE, exception.getErrorCode());
     }
 
     @Test
@@ -85,8 +90,12 @@ public class ReservationTest {
         Reservation reservation = Reservation.reserve(mockUser, mockSeat);
         reservation.cancel();
 
-        // When & Then
-        IllegalStateException exception = Assertions.assertThrows(IllegalStateException.class, reservation::cancel);
-        Assertions.assertEquals("이미 취소된 좌석입니다.", exception.getMessage());
+        // when
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
+            reservation.cancel();
+        });
+
+        Assertions.assertEquals(ErrorCode.RESERVATION_CANCEL, exception.getErrorCode());
+
     }
 }

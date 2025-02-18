@@ -45,6 +45,9 @@ public class Reservation extends BaseEntity {
     private LocalDateTime reservedAt;
     private LocalDateTime expiredAt;
 
+    @Version
+    private int version;
+
     private Reservation(User user, ConcertSeat concertSeat,ReservationStatus status) {
         this.user = user;
         this.concertSeat = concertSeat;

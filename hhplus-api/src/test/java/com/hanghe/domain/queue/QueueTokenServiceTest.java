@@ -1,5 +1,7 @@
 package com.hanghe.domain.queue;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.queue.entity.QueueStatus;
 import com.hanghe.domain.queue.entity.QueueToken;
 import com.hanghe.domain.queue.repository.QueueTokenRepository;
@@ -96,7 +98,7 @@ public class QueueTokenServiceTest {
         // Given
         Long tokenId = 1L;
         QueueToken mockToken = mock(QueueToken.class);
-        when(queueTokenRepository.findById(tokenId)).thenReturn(Optional.of(mockToken));
+        when(queueTokenRepository.findById(tokenId)).thenReturn(mockToken);
 
         // When
         QueueToken result = queueTokenService.findQueueToken(tokenId);
@@ -112,14 +114,13 @@ public class QueueTokenServiceTest {
     void findQueueToken_ShouldThrowException_WhenTokenDoesNotExist() {
         // Given
         Long tokenId = 1L;
-        when(queueTokenRepository.findById(tokenId)).thenReturn(Optional.empty());
+        when(queueTokenRepository.findById(tokenId)).thenThrow(new BusinessException(ErrorCode.TOKEN_INVALID));
 
         // When & Then
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             queueTokenService.findQueueToken(tokenId);
         });
-
-        Assertions.assertEquals("해당 토큰이 없습니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.TOKEN_INVALID, exception.getErrorCode());
         verify(queueTokenRepository, times(1)).findById(tokenId);
     }
 

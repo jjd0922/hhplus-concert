@@ -17,11 +17,16 @@ public class QueueTokenScheduler {
     public void queueTokenValidation() {
         try {
             List<QueueToken> expiredTokens = queueTokenService.findQueueActiveTokenExpire();
-            for (QueueToken expiredToken : expiredTokens) {
-                // 만료처리
-                expiredToken.expire();
-                // 대기 -> 입장
+            if (!expiredTokens.isEmpty()) {
+                expiredTokens.forEach(QueueToken::expire);
+                queueTokenService.updateExpiredTokens(expiredTokens);
                 queueTokenService.activeWaitingToken();
+//                for (QueueToken expiredToken : expiredTokens) {
+//                    // 만료처리
+//                    expiredToken.expire();
+//                    // 대기 -> 입장
+//                    queueTokenService.activeWaitingToken();
+//                }
             }
         } catch (Exception e) {
 

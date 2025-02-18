@@ -1,7 +1,7 @@
 package com.hanghe.common.exception;
 
-import org.springframework.http.HttpStatus;
-
+import lombok.Getter;
+@Getter
 public class BusinessException extends RuntimeException{
 
     private final ErrorCode errorCode;
@@ -10,4 +10,5 @@ public class BusinessException extends RuntimeException{
         super(errorCode.getMsg());
         this.errorCode = errorCode;
     }
+
 }

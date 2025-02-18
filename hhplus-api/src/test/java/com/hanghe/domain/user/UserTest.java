@@ -1,5 +1,7 @@
 package com.hanghe.domain.user;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.user.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +15,7 @@ public class UserTest {
         // given
         Long userId = 1L;
         String name = "테스트";
-        int amount = 1000;
+        Long amount = 1000L;
         User user = User.create(userId,name);
 
         // when
@@ -32,11 +34,11 @@ public class UserTest {
         User user = User.create(1L, "테스트");
 
         // Act & Assert
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            user.chargeBalance(-1000);
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
+            user.chargeBalance(-1000L);
         });
 
-        Assertions.assertEquals("충전 금액은 0보다 커야 합니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.USER_MINUS_AMOUNT, exception.getErrorCode());
     }
 
     @Test
@@ -45,8 +47,8 @@ public class UserTest {
         // given
         Long userId = 1L;
         String name = "테스트";
-        int amount = 1000;
-        User user = new User(userId,name,3000);
+        Long amount = 1000L;
+        User user = new User(userId,name,3000L);
 
         // when
         user.useBalance(amount);
@@ -63,29 +65,28 @@ public class UserTest {
         // given
         Long userId = 1L;
         String name = "테스트";
-        int amount = 2000;
-        User user = new User(userId,name,1000);
+        Long amount = 2000L;
+        User user = new User(userId,name,1000L);
 
         // when
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             user.useBalance(amount);
         });
-
         // then
-        Assertions.assertEquals("잔액이 부족합니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.USER_MINUS_AMOUNT, exception.getErrorCode());
     }
 
     @Test
     @DisplayName("잔액 사용: 잘못된 금액 입력 시 예외 발생")
     void useBalance_ShouldThrowException_WhenAmountIsInvalid() {
-        // Arrange
+        // given
         User user = User.create(1L, "Test User");
 
-        // Act & Assert
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            user.useBalance(-10);
+        // when
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
+            user.useBalance(-10L);
         });
 
-        Assertions.assertEquals("사용 금액은 0보다 커야 합니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.USER_MINUS_AMOUNT, exception.getErrorCode());
     }
 }

@@ -1,5 +1,7 @@
 package com.hanghe.domain.concert;
 
+import com.hanghe.common.exception.BusinessException;
+import com.hanghe.common.exception.ErrorCode;
 import com.hanghe.domain.concert.entity.ConcertSeat;
 import com.hanghe.domain.concert.repository.ConcertSeatRepository;
 import com.hanghe.domain.concert.service.ConcertSeatService;
@@ -31,7 +33,7 @@ public class ConcertSeatServiceTest {
         // Given
         Long seatId = 1L;
         ConcertSeat mockSeat = mock(ConcertSeat.class);
-        when(concertSeatRepository.findById(seatId)).thenReturn(Optional.of(mockSeat));
+        when(concertSeatRepository.findById(seatId)).thenReturn(mockSeat);
 
         // When
         ConcertSeat result = concertSeatService.findSeat(seatId);
@@ -47,14 +49,14 @@ public class ConcertSeatServiceTest {
     void findSeat_ShouldThrowEntityNotFoundException_WhenSeatDoesNotExist() {
         // Given
         Long seatId = 1L;
-        when(concertSeatRepository.findById(seatId)).thenReturn(Optional.empty());
+        when(concertSeatRepository.findById(seatId)).thenThrow(new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND));
 
         // When & Then
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> {
+        BusinessException exception = Assertions.assertThrows(BusinessException.class, () -> {
             concertSeatService.findSeat(seatId);
         });
 
-        Assertions.assertEquals("해당 좌석이 없습니다.", exception.getMessage());
+        Assertions.assertEquals(ErrorCode.CONCERT_SEAT_NOT_FOUND, exception.getErrorCode());
         verify(concertSeatRepository, times(1)).findById(seatId);
     }
 }

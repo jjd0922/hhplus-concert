@@ -1,18 +1,15 @@
-package com.hanghe.domain.queue.repository;
+package com.hanghe.infrastructure.queue;
 
-import com.hanghe.domain.queue.entity.QueueToken;
 import com.hanghe.domain.queue.entity.QueueStatus;
+import com.hanghe.domain.queue.entity.QueueToken;
 import com.hanghe.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface QueueTokenRepository {
+public interface QueueTokenJpaRepository extends JpaRepository<QueueToken,Long> {
 
-    QueueToken save(QueueToken queueToken);
-    List<QueueToken> saveAll(List<QueueToken> queueTokens);
-    QueueToken findById(Long queueTokenId);
     int countByStatus(QueueStatus status);
 
     QueueToken findByUserAndToken(User user, String token);
